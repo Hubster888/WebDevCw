@@ -1,4 +1,20 @@
 @extends('layouts.app')
-@section('content')
-<p>Swansea zoo will soon have many food outlets.</p>
+@section('post_list')
+<x-post-view/>
+<x-post-view/>
+<x-post-view/>
+<x-post-view/>
+<x-post-view/>
+<x-post-view/>
+<x-post-view/>
+<x-post-view/>
+@endsection
+@section('comment_list')
+<x-comment-view/>
+<x-comment-view/>
+<x-comment-view/>
+<x-comment-view/>
+<x-comment-view/>
+<x-comment-view/>
+<x-comment-view/>
 @endsection
