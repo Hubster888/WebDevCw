@@ -23,12 +23,25 @@ body {
     margin: 25px 50px 25px 50px;
     padding: 25px 10px 25px 10px;
 }
+
+#title {
+  font-family: "Times New Roman", Times, serif;
+  font-style: oblique;
+  font-weight: bold;
+  font-size: 1.8em;
+  margin: 10px 0px 10px 0px;
+}
+
+#author {
+    font-weight: bold;
+    margin: 10px 0px 10px 0px;
+}
 </style>
 <div id="post_container">
     <!-- Create the list html using bootstrap and leave room for injections of data and add CSS to make it nice -->
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-12" id="title">
                 This is title
             </div>
             <div class="col-sm-12">
@@ -37,7 +50,7 @@ body {
             She new course get living within elinor joy. She her rapturous suffering concealed. 
             An so vulgar to on points wanted. Not rapturous resolving continued household northward gay. He it otherwise supported instantly.  
             </div>
-            <div class="col-sm-12">
+            <div class="col-sm-12" id="author">
                 By Hubert Rzeminski 
             </div>
         </div>
