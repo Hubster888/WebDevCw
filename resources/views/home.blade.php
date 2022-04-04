@@ -7,7 +7,7 @@
 <x-post-view/>
 <x-post-view/>
 <x-post-view/>
-<x-post-view/>
+{{$post_id}}
 @endsection
 @section('comment_list')
 <x-comment-view/>

@@ -17,6 +17,6 @@ use Illuminate\Support\Facades\Route;
     return view('welcome');
 });*/
 
-Route::get('/', function(){
-    return view('home');
-    });
+Route::get('/{post_id?}', function($post_id = null){
+    return view('home', ['post_id'=>$post_id]);
+});
