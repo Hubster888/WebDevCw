@@ -6,14 +6,40 @@ use Illuminate\View\Component;
 
 class PostView extends Component
 {
+
+    /**
+     * The post title.
+     *
+     * @var string
+     */
+    public $title;
+
+    /**
+     * The post content.
+     *
+     * @var string
+     */
+    public $content;
+
+    /**
+     * The post's author.
+     *
+     * @var string
+     */
+    public $author;
+
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($title="No Title", $content="No Content", $author="Unknown")
     {
         //
+        $this->content = $content;
+        $this->title = $title;
+        $this->author = $author;
     }
 
     /**

@@ -14,14 +14,16 @@
         <div class="container-fluid text-center">
             <div class="row">
                 <div class="col-lg-4">
-                    <button type="button" class="btn btn-success" id="button">Add post</button>
+                    @auth
+                        <button type="button" class="btn btn-success" id="button">Add post</button>
+                    @endauth
                 </div>
                 <div class="col-lg-4">
                     <h1>All Posts</h1>
                     <p>Left shows posts and right shows related comments</p> 
                 </div>
                 <div class="col-lg-4">
-                    <button type="button" class="btn btn-success" id="button">Log In</button>
+                    <button type="button" class="btn btn-success" id="button">Account</button>
                 </div>
             </div>
             <div class="row">
