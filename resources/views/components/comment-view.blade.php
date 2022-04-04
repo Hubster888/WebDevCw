@@ -3,7 +3,7 @@
     <!-- Create the list html using bootstrap and leave room for injections of data and add CSS to make it nice -->
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-12" id="title">
                 This is title
             </div>
             <div class="col-sm-12">
@@ -12,7 +12,7 @@
             She new course get living within elinor joy. She her rapturous suffering concealed. 
             An so vulgar to on points wanted. Not rapturous resolving continued household northward gay. He it otherwise supported instantly.  
             </div>
-            <div class="col-sm-12">
+            <div class="col-sm-12" id="author">
                 By Hubert Rzeminski 
             </div>
         </div>
