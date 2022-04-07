@@ -13,7 +13,7 @@
         @method('DELETE')
     </form>
 
-    <a  href="/comments/{{$post_id}}/new"> 
+    <a  href="/home/comments/{{$post_id}}/new"> 
         <button type="button" class="btn btn-success" id="button">Add comment</button>
     </a>
 @endsection
@@ -24,8 +24,21 @@
 
 @section('list')
     @foreach($comments as $comments)
-        <a href="/home/posts">
-            <x-comment-view :title="$comments->title" :content="$comments->content" :author="$comments->user->name"/>
-        </a>
+        <x-comment-view :title="$comments->title" :content="$comments->content" :author="$comments->user->name"/>
+        <div class="row">
+            <div col="col-lg-6">
+                <a href="/home/comments/{{$post_id}}/{{$comments->id}}" method="edit">
+                    <button type="button" class="btn btn-success" id="button">Edit comment</button> 
+                </a>
+            </div>
+            <div col="col-lg-6">
+                <button type="button" class="btn btn-secondary" onClick="event.preventDefault(); document.getElementById('delete-form-comment').submit();">Delete comment</button> 
+                <form id="delete-form-comment" method="post" action="/home/comments/{{$post_id}}/{{$comments->id}}">
+                    @csrf 
+                    @method('DELETE')
+                </form>
+            </div>
+        </div>
+        
     @endforeach
 @endsection

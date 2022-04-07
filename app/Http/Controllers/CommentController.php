@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Models\Post;
+use Auth;
 
 class CommentController extends Controller 
 {
@@ -53,12 +55,11 @@ class CommentController extends Controller
             'title' => 'required|max:25'
         ]);
 
-        $post = Post::where("id", $request->post_id)->get()->first();
-
-        $comment = $post->comments()->create($request->only(['title', 'content', 'post_id']));
+        $comment = Auth::user()->comments()->create($request->only(['title', 'content', 'post_id']));
+        $id = $request->post_id;
 
         if ($comment) {
-            return redirect()->to('/home/posts/{{$request->post_id}}');
+            return redirect()->to('/home/comments/'.$id);
         }
 
         return redirect()->back();
@@ -81,9 +82,12 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($post_id, $comment_id)
     {
         //
+        $post = Post::where("id", $post_id)->get()->first();
+        $comment = $post->comments()->where("id", $comment_id)->get()->first();
+        return view('edit_comment', ['comment'=>$comment, 'post'=>$post]);
     }
 
     /**
@@ -93,9 +97,23 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $post_id, $comment_id)
     {
         //
+        $post = Post::where("id", $post_id)->get()->first();
+        $comment = $post->comments()->where("id", $comment_id)->get()->first();
+        if($comment->user_id != Auth::id()) {
+            return abort(403);
+        }
+
+        $request->validate([
+            'content' => 'required|max:500',
+            'title' => 'required|max:25'
+        ]);
+
+        $comment->update($request->only(['title', 'content']));
+
+        return redirect()->to('/home/comments/'.$post_id);
     }
 
     /**
@@ -104,8 +122,15 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($post_id, $comment_id)
     {
         //
+        $post = Post::where("id", $post_id)->get()->first();
+        $comment = $post->comments()->where("id", $comment_id)->get()->first();
+        if($comment->user_id != Auth::id()) {
+            return abort(403);
+        }
+        $comment->delete();
+        return redirect()->to('/home/comments/'.$post_id);
     }
 }

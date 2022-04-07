@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Add Comment</title>
+        <title>Edit Post</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -12,19 +12,18 @@
 
     <body>
     
-        <form action="/home/comments/{{$post_id}}/new" method="post">
-            <input type="hidden" id="post_id" name="post_id" class="form-control" value="{{$post_id}}"/>
+        <form action="/home/comments/{{$post->id}}/{{$comment->id}}" method="post">
             <div class="row">
                 <div class="col-12 col-md-6">
                     <label for="title">Comment Title</label>
-                    <input type="text" id="title" name="title" class="form-control{{ $errors->first('title') ? 'is-invalid' : ''}}" placeholder="Cats..."/>
+                    <input type="text" id="title" name="title" class="form-control{{ $errors->first('title') ? 'is-invalid' : ''}}" placeholder="Cats..." value="{{$comment->title}}"/>
                     @if($errors->first('title'))
                         <div class="invalid-feedback"> {{$errors->first('title')}} </div>
                     @endif 
                 </div>
                 <div class="col-12 col-md-6">
                     <label for="content">Comment Content</label>
-                    <input type="text" id="content" name="content" class="form-control{{ $errors->first('content') ? 'is-invalid' : ''}}" placeholder="Cats are great..."/>
+                    <input type="text" id="content" name="content" class="form-control{{ $errors->first('content') ? 'is-invalid' : ''}}" placeholder="Cats are great..." value="{{$comment->content}}"/>
                     @if($errors->first('content'))
                         <div class="invalid-feedback"> {{$errors->first('content')}} </div>
                     @endif     
