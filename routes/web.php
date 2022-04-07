@@ -15,7 +15,29 @@ use App\Http\Controllers\CommentController;
 |
 */
 
-Route::get('/posts', [PostController::class, 'index'], function(){
-    return view('posts');
+Route::get('/', function(){
+    return view('home');
 });
+
+Route::group(['middleware' => 'auth', 'prefix' => 'home'], function(){
+    Route::get('/posts', [PostController::class, 'index']);
+    Route::get('/posts/new', [PostController::class, 'create']);
+    Route::post('/posts/new', [PostController::class, 'store']);
+    Route::get('/posts/{post_id}', [PostController::class, 'edit']);
+    Route::post('/posts/{post_id}', [PostController::class, 'update']);
+    Route::delete('posts/{post_id}', [PostController::class, 'destroy']);
+
+    Route::get('/comments/{post_id}', [CommentController::class, 'index']);
+    Route::get('/comments/{post_id}/new', [CommentController::class, 'create']);
+    Route::post('/comments/{post_id}/new', [CommentController::class, 'store']);
+    Route::get('/comments/{post_id}/{comment_id}', [CommentController::class, 'edit']);
+    Route::post('/comments/{post_id}/{comment_id}', [CommentController::class, 'update']);
+    Route::delete('comments/{post_id}/{comment_id}', [CommentController::class, 'destroy']);
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
 

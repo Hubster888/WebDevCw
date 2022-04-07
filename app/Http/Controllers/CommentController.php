@@ -7,16 +7,24 @@ use App\Models\Comment;
 
 class CommentController extends Controller 
 {
+
+    public function apiIndex()
+    {
+        $comments = Comment::all();
+        return $comments;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($post_id)
     {
         //
-        $comments = Comment::all();
-        return view('comments', ['comments'=>$comments]);
+        //$comments = Comment::all();
+        $comments = Comment::where("post_id", $post_id)->get();
+        return view('comments', ['comments'=>$comments, 'post_id'=>$post_id]);
     }
 
     /**
@@ -24,9 +32,10 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($post_id)
     {
         //
+        return view('addComment', ['post_id'=>$post_id]);
     }
 
     /**
@@ -38,6 +47,21 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         //
+        //
+        $request->validate([
+            'content' => 'required|max:500',
+            'title' => 'required|max:25'
+        ]);
+
+        $post = Post::where("id", $request->post_id)->get()->first();
+
+        $comment = $post->comments()->create($request->only(['title', 'content', 'post_id']));
+
+        if ($comment) {
+            return redirect()->to('/home/posts/{{$request->post_id}}');
+        }
+
+        return redirect()->back();
     }
 
     /**

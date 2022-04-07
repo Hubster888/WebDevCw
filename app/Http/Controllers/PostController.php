@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Auth;
 
 class PostController extends Controller
 {
@@ -27,6 +28,7 @@ class PostController extends Controller
     public function create()
     {
         //
+        return view('addPost');
     }
 
     /**
@@ -38,6 +40,18 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'content' => 'required|max:500',
+            'title' => 'required|max:25'
+        ]);
+
+        $post = Auth::user()->posts()->create($request->only(['title', 'content']));
+
+        if ($post) {
+            return redirect()->to('/home/posts');
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -60,6 +74,8 @@ class PostController extends Controller
     public function edit($id)
     {
         //
+        $post = Post::where("id", $id)->get()->first();
+        return view('edit_post', ['post'=>$post]);
     }
 
     /**
@@ -72,6 +88,19 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $post = Post::where("id", $id)->get()->first();
+        if($post->user_id != Auth::id()) {
+            return abort(403);
+        }
+
+        $request->validate([
+            'content' => 'required|max:500',
+            'title' => 'required|max:25'
+        ]);
+
+        $post->update($request->only(['title', 'content']));
+
+        return redirect()->to('/home/posts');
     }
 
     /**
@@ -83,5 +112,11 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+        $post = Post::where("id", $id)->get()->first();
+        if($post->user_id != Auth::id()) {
+            return abort(403);
+        }
+        $post->delete();
+        return redirect()->to('/home/posts'); 
     }
 }
