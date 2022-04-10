@@ -21,8 +21,11 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12">
-                    @yield("list")
+                <div class="col-lg-6">
+                    @yield("post_list")
+                </div>
+                <div class="col-lg-6">
+                    @yield("comment_list")
                 </div>
             </div>
         </div>

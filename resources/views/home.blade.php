@@ -16,7 +16,7 @@
 
                     {{ __('You are logged in!') }}
                 </div>
-                <a href="/home/posts"> See Posts </a>
+                <a href="/home/posts/0/show"> See Posts </a>
             </div>
         </div>
     </div>

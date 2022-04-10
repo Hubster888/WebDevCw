@@ -24,9 +24,7 @@ class CommentController extends Controller
     public function index($post_id)
     {
         //
-        //$comments = Comment::all();
-        $comments = Comment::where("post_id", $post_id)->get();
-        return view('comments', ['comments'=>$comments, 'post_id'=>$post_id]);
+        
     }
 
     /**
@@ -57,9 +55,20 @@ class CommentController extends Controller
 
         $comment = Auth::user()->comments()->create($request->only(['title', 'content', 'post_id']));
         $id = $request->post_id;
+        $post = Post::where("id", $id)->get()->first();
+        $email = $post->user()->get()->first()->email;
 
         if ($comment) {
-            return redirect()->to('/home/comments/'.$id);
+            // the message
+            $msg = "Your post got a comment!";
+
+            // use wordwrap() if lines are longer than 70 characters
+            $msg = wordwrap($msg,70);
+
+            // send email
+            mail("rzeminski16@gmail.com","Alert",$msg);
+            
+            return redirect()->to('/home/posts/'.$id.'/show');
         }
 
         return redirect()->back();
@@ -113,7 +122,7 @@ class CommentController extends Controller
 
         $comment->update($request->only(['title', 'content']));
 
-        return redirect()->to('/home/comments/'.$post_id);
+        return redirect()->to('/home/posts/'.$post_id.'/show');
     }
 
     /**
@@ -131,6 +140,10 @@ class CommentController extends Controller
             return abort(403);
         }
         $comment->delete();
-        return redirect()->to('/home/comments/'.$post_id);
+        return redirect()->to('/home/posts/'.$post_id.'/show');
+    }
+
+    public function show_delete($post_id, $comment_id){
+        return view('delete_comment', ['post_id'=>$post_id, 'comment_id'=>$comment_id]);
     }
 }

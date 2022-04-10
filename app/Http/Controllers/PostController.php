@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Comment;
 use Auth;
 
 class PostController extends Controller
@@ -13,11 +14,20 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($post_id)
     {
-        //
+        // Get all posts and comments according to post_id
         $posts = Post::all();
-        return view('posts', ['posts'=>$posts]);
+
+        if ($post_id < 0) {
+            $comments = Null;
+            return view('posts', ['posts'=>$posts, 'comments'=>$comments]);
+        }
+
+        $comments = Comment::where("post_id", $post_id)->get();
+        
+        return view('posts', ['posts'=>$posts, 'comments'=>$comments, 'id'=>$post_id]);
+        
     }
 
     /**
@@ -48,7 +58,7 @@ class PostController extends Controller
         $post = Auth::user()->posts()->create($request->only(['title', 'content']));
 
         if ($post) {
-            return redirect()->to('/home/posts');
+            return redirect('/home/posts/0/show');
         }
 
         return redirect()->back();
@@ -100,7 +110,7 @@ class PostController extends Controller
 
         $post->update($request->only(['title', 'content']));
 
-        return redirect()->to('/home/posts');
+        return redirect()->to('/home/posts/0/show');
     }
 
     /**
@@ -117,6 +127,6 @@ class PostController extends Controller
             return abort(403);
         }
         $post->delete();
-        return redirect()->to('/home/posts'); 
+        return redirect()->to('/home/posts/0/show'); 
     }
 }

@@ -6,7 +6,7 @@ body {
     width: 800px;
     height: auto;
     text-align: center;
-    background-color: gray;
+
     margin: auto;
     border-style: dashed;
     margin: 25px 50px 25px 50px;
@@ -37,7 +37,7 @@ body {
     margin: 10px 0px 10px 0px;
 }
 </style>
-<div id="post_container">
+
     <!-- Create the list html using bootstrap and leave room for injections of data and add CSS to make it nice -->
     <div class="container-fluid text-center">
         <div class="row">
@@ -52,6 +52,6 @@ body {
             </div>
         </div>
     </div>
-</div>
+
 
 
