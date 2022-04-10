@@ -1,7 +1,7 @@
 @extends('layouts.list')
 @extends('layouts.app')
     
-@section('add_button')
+@section('add_button') <!--Display add and delete post buttons-->
     <a href="/home/posts/new">
         <button type="button" class="btn btn-success" id="button">Add post</button>
     </a>
@@ -18,7 +18,7 @@
     <h1>All Posts</h1>
 @endsection
 
-@section('post_list')
+@section('post_list') <!--Display list of all posts-->
     @foreach($posts as $post)
         <a href="/home/posts/{{$post->id}}/show">
             @if($post->id == $id)
@@ -40,16 +40,16 @@
             <button type="button" class="btn btn-success" id="button">Add comment</button>
         </a>
     @endforeach
-@endsection
+@endsection 
 
-@section('comment_list')
+@section('comment_list') <!--Display list of all for the selected post-->
     @if($comments)
         @foreach($comments as $comment)
             <x-comment-view :title="$comment->title" :content="$comment->content" :author="$comment->user->name"/>
             <a href="/home/comments/{{$id}}/{{$comment->id}}" method="edit">
                 <button type="button" class="btn btn-success" id="button">Edit</button> 
             </a>
-            <a href="/home/comments/{{$id}}/{{$comment->id}}">
+            <a href="/home/comments/{{$id}}/{{$comment->id}}/delete" method="show_delete">
                 <button type="button" class="btn btn-success" id="button">Delete</button>
             </a>
             <form id="delete-form-comment" method="post" action="/home/comments/{{$id}}/{{$comment->id}}">

@@ -10,12 +10,6 @@ use Auth;
 class CommentController extends Controller 
 {
 
-    public function apiIndex()
-    {
-        $comments = Comment::all();
-        return $comments;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -34,7 +28,6 @@ class CommentController extends Controller
      */
     public function create($post_id)
     {
-        //
         return view('addComment', ['post_id'=>$post_id]);
     }
 
@@ -46,8 +39,7 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        //
+        // Limit to 500 and 25 characters for content and titel
         $request->validate([
             'content' => 'required|max:500',
             'title' => 'required|max:25'
@@ -56,7 +48,7 @@ class CommentController extends Controller
         $comment = Auth::user()->comments()->create($request->only(['title', 'content', 'post_id']));
         $id = $request->post_id;
         $post = Post::where("id", $id)->get()->first();
-        $email = $post->user()->get()->first()->email;
+        $email = $post->user()->get()->first()->email; // Get the email of the user that made this post
 
         if ($comment) {
             // the message
@@ -66,12 +58,12 @@ class CommentController extends Controller
             $msg = wordwrap($msg,70);
 
             // send email
-            mail("rzeminski16@gmail.com","Alert",$msg);
+            mail($email,"Alert",$msg); // Send the email
             
             return redirect()->to('/home/posts/'.$id.'/show');
         }
 
-        return redirect()->back();
+        return redirect()->back(); // If failed
     }
 
     /**
@@ -111,10 +103,11 @@ class CommentController extends Controller
         //
         $post = Post::where("id", $post_id)->get()->first();
         $comment = $post->comments()->where("id", $comment_id)->get()->first();
-        if($comment->user_id != Auth::id()) {
+        if($comment->user_id != Auth::id()) { // Check user is authenticated for this action
             return abort(403);
         }
 
+        // Validate edit
         $request->validate([
             'content' => 'required|max:500',
             'title' => 'required|max:25'
@@ -143,6 +136,13 @@ class CommentController extends Controller
         return redirect()->to('/home/posts/'.$post_id.'/show');
     }
 
+    /**
+     * Display a delete confirmation.
+     *
+     * @param  int  $post_id
+     * @param  int  $comment_id
+     * @return \Illuminate\Http\Response
+     */
     public function show_delete($post_id, $comment_id){
         return view('delete_comment', ['post_id'=>$post_id, 'comment_id'=>$comment_id]);
     }

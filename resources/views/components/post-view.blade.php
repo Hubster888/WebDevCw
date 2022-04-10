@@ -30,28 +30,27 @@ body {
   font-weight: bold;
   font-size: 1.8em;
   margin: 10px 0px 10px 0px;
-}
+} 
 
 #author {
     font-weight: bold;
     margin: 10px 0px 10px 0px;
-}
+} 
 </style>
-
-    <!-- Create the list html using bootstrap and leave room for injections of data and add CSS to make it nice -->
-    <div class="container-fluid text-center">
-        <div class="row">
-            <div class="col-sm-12" id="title">
-                {{$title}}
-            </div>
-            <div class="col-sm-12">
-                {{$content}}
-            </div>
-            <div class="col-sm-12" id="author">
-                By {{$author}} 
-            </div>
+<!-- The style sets the look for both the post and comment views-->
+<div class="container-fluid text-center">
+    <div class="row">
+        <div class="col-sm-12" id="title">
+            {{$title}}
+        </div>
+        <div class="col-sm-12">
+            {{$content}}
+        </div>
+        <div class="col-sm-12" id="author">
+            By {{$author}} 
         </div>
     </div>
+</div>
 
 
 

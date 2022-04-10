@@ -16,10 +16,10 @@ class PostController extends Controller
      */
     public function index($post_id)
     {
-        // Get all posts and comments according to post_id
+        // Get all posts
         $posts = Post::all();
 
-        if ($post_id < 0) {
+        if ($post_id < 0) { // Check if a post is selected
             $comments = Null;
             return view('posts', ['posts'=>$posts, 'comments'=>$comments]);
         }
@@ -28,7 +28,7 @@ class PostController extends Controller
         
         return view('posts', ['posts'=>$posts, 'comments'=>$comments, 'id'=>$post_id]);
         
-    }
+    } 
 
     /**
      * Show the form for creating a new resource.
@@ -49,16 +49,16 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate post input
         $request->validate([
             'content' => 'required|max:500',
             'title' => 'required|max:25'
         ]);
 
-        $post = Auth::user()->posts()->create($request->only(['title', 'content']));
+        $post = Auth::user()->posts()->create($request->only(['title', 'content'])); // Create a post for the user
 
         if ($post) {
-            return redirect('/home/posts/0/show');
+            return redirect('/home/posts/0/show'); // Go to the main page
         }
 
         return redirect()->back();
@@ -99,10 +99,11 @@ class PostController extends Controller
     {
         //
         $post = Post::where("id", $id)->get()->first();
-        if($post->user_id != Auth::id()) {
+        if($post->user_id != Auth::id()) { // Check for appropriate authentication
             return abort(403);
         }
 
+        // Validate input
         $request->validate([
             'content' => 'required|max:500',
             'title' => 'required|max:25'
@@ -121,9 +122,8 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
         $post = Post::where("id", $id)->get()->first();
-        if($post->user_id != Auth::id()) {
+        if($post->user_id != Auth::id()) { // Check for appropriate authentication
             return abort(403);
         }
         $post->delete();

@@ -19,7 +19,7 @@ Route::get('/', function(){
     return view('home');
 });
 
-Route::group(['middleware' => 'auth', 'prefix' => 'home'], function(){
+Route::group(['middleware' => 'auth', 'prefix' => 'home'], function(){ // All these pages require you to be logged in
     Route::get('/posts/new', [PostController::class, 'create']);
     Route::post('/posts/new', [PostController::class, 'store']);
     Route::get('/posts/{post_id}/show', [PostController::class, 'index']); // Show posts and comments with related id
@@ -31,7 +31,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'home'], function(){
     Route::post('/comments/{post_id}/new', [CommentController::class, 'store']);
     Route::get('/comments/{post_id}/{comment_id}', [CommentController::class, 'edit']);
     Route::post('/comments/{post_id}/{comment_id}', [CommentController::class, 'update']);
-    Route::get('/comments/{post_id}/{comment_id}', [CommentController::class, 'show_delete']);
+    Route::get('/comments/{post_id}/{comment_id}/delete', [CommentController::class, 'show_delete']); // Display a confirmation to delete a comment
     Route::delete('/comments/{post_id}/{comment_id}', [CommentController::class, 'destroy']);
 });
 
@@ -41,3 +41,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 
+ 
